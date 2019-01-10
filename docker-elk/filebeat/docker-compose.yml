@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  filebeat:
+    build:
+      context: filebeat/             
+    ports:
+      -         
+    volumes:
+      - ./filebeat/config/filebeat.yml:/filebeat.yml
+      - ~/dockerdata/filebeat:/data
+      - /var/lib/docker/containers:/var/lib/docker/containers
