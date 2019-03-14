@@ -14,6 +14,8 @@ import com.example.miaosha.entity.UserPassword;
 import com.example.miaosha.error.BusinessException;
 import com.example.miaosha.error.EnBusinessError;
 import com.example.miaosha.model.UserModel;
+import com.example.miaosha.validate.ValidationResult;
+import com.example.miaosha.validate.ValidatorImpl;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserPasswordMapper userPasswordMapper;
+	
+	@Autowired
+	private ValidatorImpl validator;
 	
 	@Override
 	public UserVO getUserById(Integer id) {
@@ -43,13 +48,18 @@ public class UserServiceImpl implements UserService {
 		if (userModel == null){
 			throw new BusinessException(EnBusinessError.PARAMETER_VALIDATION_ERROR);
 		}
-		if (StringUtils.isEmpty(userModel.getTelephone()) 
+		/*if (StringUtils.isEmpty(userModel.getTelephone()) 
 				|| StringUtils.isEmpty(userModel.getName())
 				|| userModel.getAge() == null
 				|| userModel.getGender() == null
 				){
 			throw new BusinessException(EnBusinessError.PARAMETER_VALIDATION_ERROR);
+		}*/
+		ValidationResult result = validator.validate(userModel);
+		if (result.isError()){
+			throw new BusinessException(EnBusinessError.PARAMETER_VALIDATION_ERROR);
 		}
+		
 		UserInfo userInfo = convertFromUserModel(userModel);
 		usermapper.insertSelective(userInfo);
 		

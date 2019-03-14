@@ -83,6 +83,7 @@ public class UserController extends BaseController{
 		if (!StringUtils.isEmpty(InsessionOptCode) && !otpCode.equals(InsessionOptCode)){		
 			throw new BusinessException(EnBusinessError.PARAMETER_VALIDATION_ERROR, "验证码不正确");			
 		}
+	
 		//2.用户的注册流程
 		UserModel userModel =  new UserModel();
 		userModel.setAge(age);
