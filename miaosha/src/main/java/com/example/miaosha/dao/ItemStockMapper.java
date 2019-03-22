@@ -1,5 +1,7 @@
 package com.example.miaosha.dao;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.example.miaosha.entity.ItemStock;
 
 public interface ItemStockMapper {
@@ -53,4 +55,6 @@ public interface ItemStockMapper {
      * @mbg.generated Fri Mar 15 11:11:54 CST 2019
      */
     int updateByPrimaryKey(ItemStock record);
+    
+    int decreaseStock(@RequestParam("itemId")Integer itemId, @RequestParam("amount")Integer amount);
 }

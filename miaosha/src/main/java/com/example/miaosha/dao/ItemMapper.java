@@ -54,4 +54,6 @@ public interface ItemMapper {
      * @mbg.generated Fri Mar 15 11:11:54 CST 2019
      */
     int updateByPrimaryKey(Item record);
+    
+    void increaseSales(Integer id, Integer amount);
 }

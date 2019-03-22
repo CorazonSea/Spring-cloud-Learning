@@ -114,6 +114,26 @@ public class ItemServiceImpl implements ItemService {
 		}
 		return itemModel;
 	}
+
+	@Override
+	public Boolean decreseStock(Integer itemId, Integer amount) {
+		// TODO Auto-generated method stub
+		int affectRows = itemStockMapper.decreaseStock(itemId, amount);
+		if (affectRows <= 0){
+			//更新库存失败
+			return false;
+		}else{
+			//更新库存成功
+			return true;			
+		}
+	}
+
+	@Override
+	@Transactional
+	public void increaseSales(Integer id, Integer amount) {
+		// TODO Auto-generated method stub
+		itemMapper.increaseSales(id, amount);		
+	}
 		
 		
 }
