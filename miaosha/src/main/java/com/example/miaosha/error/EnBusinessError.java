@@ -17,6 +17,7 @@ public enum EnBusinessError implements CommonError {
 	//30000库存信息错误定义
 	STOCK_NOT_ENOUGH(30001,"库存不足"),
 	
+	
 	;
 	
 	private int errCode;

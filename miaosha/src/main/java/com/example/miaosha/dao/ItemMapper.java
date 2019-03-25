@@ -2,6 +2,8 @@ package com.example.miaosha.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.example.miaosha.entity.Item;
 
 public interface ItemMapper {
@@ -55,5 +57,7 @@ public interface ItemMapper {
      */
     int updateByPrimaryKey(Item record);
     
-    void increaseSales(Integer id, Integer amount);
+    int increaseSales(@Param("id")Integer id, @Param("amount")Integer amount);    
+    
+    
 }

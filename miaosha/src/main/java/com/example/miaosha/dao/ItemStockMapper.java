@@ -1,6 +1,6 @@
 package com.example.miaosha.dao;
 
-import org.springframework.web.bind.annotation.RequestParam;
+import org.apache.ibatis.annotations.Param;
 
 import com.example.miaosha.entity.ItemStock;
 
@@ -56,5 +56,5 @@ public interface ItemStockMapper {
      */
     int updateByPrimaryKey(ItemStock record);
     
-    int decreaseStock(@RequestParam("itemId")Integer itemId, @RequestParam("amount")Integer amount);
+    int decreaseStock(@Param("itemId")Integer itemId, @Param("amount")Integer amount);
 }

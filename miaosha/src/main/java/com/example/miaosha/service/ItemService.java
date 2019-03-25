@@ -20,5 +20,5 @@ public interface ItemService {
 	Boolean decreseStock(Integer itemId, Integer amount);
 	
 	//销量增加
-	void increaseSales(Integer id, Integer amount);
+	void increaseSales(Integer itemId, Integer amount);
 }

@@ -3,6 +3,7 @@ package com.example.miaosha.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.miaosha.VOModel.ItemVO;
 import com.example.miaosha.error.BusinessException;
 import com.example.miaosha.model.ItemModel;
+import com.example.miaosha.model.PromoModel;
 import com.example.miaosha.response.CommonReturnType;
 import com.example.miaosha.service.ItemService;
 
@@ -44,6 +46,18 @@ public class ItemController extends BaseController{
     	}
     	ItemVO itemVO = new ItemVO();
     	BeanUtils.copyProperties(itemModel, itemVO);
+    	
+    	PromoModel promoModel = itemModel.getPromoModel();
+    	if (promoModel != null){
+    		//正在进行或者即将进行的秒杀活动
+    		itemVO.setPromoStatus(promoModel.getStatus());
+        	itemVO.setPromoItemPrice(promoModel.getPromoItemPrice());
+        	itemVO.setStartTime(promoModel.getStartTime().toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")));
+        	itemVO.setEndTime(promoModel.getEndTime().toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")));
+    	}else{
+    		itemVO.setPromoStatus(0);
+    	}
+    	
     	return itemVO;
     }
     

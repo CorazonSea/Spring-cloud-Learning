@@ -26,7 +26,10 @@
       <columnOverride column="???" property="???" />
     </table>
      -->
-      <table tableName="sequence" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+   <!--  <table tableName="sequence" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+      <columnOverride column="???" property="???" />
+    </table> -->
+    <table tableName="promo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
       <!-- <columnOverride column="???" property="???" /> -->
     </table>
     

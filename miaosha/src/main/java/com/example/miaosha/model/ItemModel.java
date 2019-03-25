@@ -36,4 +36,8 @@ public class ItemModel {
 	@NotBlank(message = "商品图片信息不能为空")
 	private String imgUrl;	
 	
+	//使用聚合模型．即类的嵌套
+	private PromoModel promoModel;	
+	
+	
 }

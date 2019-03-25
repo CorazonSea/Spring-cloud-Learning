@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Override
 	@Transactional	
-	public OrderModel createOrder(Integer userId, Integer itemId, Integer amount) throws BusinessException {
+	public OrderModel createOrder(Integer userId, Integer itemId, Integer promoId, Integer amount) throws BusinessException {
 		// TODO Auto-generated method stub
 		//入参校验,用户是否合法，商品是否存在，购买数量是否合法
 		ItemModel itemModel = itemService.getItemById(itemId);
@@ -51,6 +51,14 @@ public class OrderServiceImpl implements OrderService {
 		if (amount <= 0 || amount >= 99){
 			throw new BusinessException(EnBusinessError.PARAMETER_VALIDATION_ERROR,"订单数量信息不合法");
 		}
+		if (promoId != null){
+			if (itemModel.getPromoModel() == null || !itemModel.getPromoModel().getId().equals(promoId)){
+				throw new BusinessException(EnBusinessError.PARAMETER_VALIDATION_ERROR, "活动信息不正确");
+			}else if (itemModel.getPromoModel().getStatus() != 2){//不是正在秒杀中
+				throw new BusinessException(EnBusinessError.PARAMETER_VALIDATION_ERROR, "活动信息不正确");
+			}
+		}
+		
 	    //落单减库存（使用），支付减库存
 		boolean result = itemService.decreseStock(itemId, amount);
 		
@@ -61,10 +69,16 @@ public class OrderServiceImpl implements OrderService {
 		OrderModel orderModel = new OrderModel();
 		orderModel.setUserId(userId);
 		orderModel.setItemId(itemId);
-		orderModel.setItemPrice(itemModel.getPrice());
+		if (promoId != null){			
+			orderModel.setItemPrice(itemModel.getPromoModel().getPromoItemPrice());
+		}else{
+			orderModel.setItemPrice(itemModel.getPrice());			
+		}
 		orderModel.setAmount(amount);
-		orderModel.setOrderPrice(itemModel.getPrice().multiply(new BigDecimal(amount)));
+		orderModel.setOrderPrice(orderModel.getItemPrice().multiply(new BigDecimal(amount)));
 		orderModel.setId(generateOrderNo());
+		orderModel.setPromoId(promoId);
+		
 		
 		//
 		OrderInfo orderInfo = convertFromOrderModel(orderModel);
@@ -104,7 +118,8 @@ public class OrderServiceImpl implements OrderService {
 		String seqStr = String.valueOf(seqCurrentValue);
 		for (int i=0; i< 6-seqStr.length(); i++){
 			orderNo.append("0");
-		}		
+		}
+		orderNo.append(seqStr);
 		//后2位为分库分表位,暂时写死
 		orderNo.append("00");
 		return orderNo.toString();

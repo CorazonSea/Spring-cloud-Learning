@@ -59,6 +59,8 @@ public class OrderInfo {
      * @mbg.generated Mon Mar 18 10:41:13 CST 2019
      */
     private BigDecimal orderPrice;
+    
+    private Integer promoId;
 
    
 }

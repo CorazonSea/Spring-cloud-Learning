@@ -3,6 +3,7 @@ package com.example.miaosha.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import com.example.miaosha.entity.ItemStock;
 import com.example.miaosha.error.BusinessException;
 import com.example.miaosha.error.EnBusinessError;
 import com.example.miaosha.model.ItemModel;
+import com.example.miaosha.model.PromoModel;
 import com.example.miaosha.validate.ValidationResult;
 import com.example.miaosha.validate.ValidatorImpl;
 
@@ -27,7 +29,11 @@ public class ItemServiceImpl implements ItemService {
 	@Autowired
 	private ItemMapper itemMapper;
 	
-	@Autowired ItemStockMapper itemStockMapper;
+	@Autowired 
+	private ItemStockMapper itemStockMapper;
+	
+	@Autowired
+	private PromoService promoService;
 	
 	@Override
 	@Transactional
@@ -81,6 +87,11 @@ public class ItemServiceImpl implements ItemService {
 		//Item entity & itemStock entity ----->ItemModel
 		ItemModel itemModel = convertFromItemAndItemStock(item, itemStock);
 		
+		//获取商品秒杀活动
+		PromoModel promoModel = promoService.getPromoByItemId(item.getId());
+		if (promoModel != null && promoModel.getStatus() != 3){			
+			itemModel.setPromoModel(promoModel);
+		}		
 		return itemModel;
 	}
 	
@@ -130,9 +141,9 @@ public class ItemServiceImpl implements ItemService {
 
 	@Override
 	@Transactional
-	public void increaseSales(Integer id, Integer amount) {
+	public void increaseSales(Integer itemId, Integer amount) {
 		// TODO Auto-generated method stub
-		itemMapper.increaseSales(id, amount);		
+		itemMapper.increaseSales(itemId, amount);		
 	}
 		
 		
